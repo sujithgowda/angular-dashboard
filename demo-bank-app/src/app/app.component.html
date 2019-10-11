@@ -1,0 +1,16 @@
+<mat-grid-list cols="2" rowHeight="100px">
+<div cdkDropListGroup>
+  <mat-grid-tile style="background-color: cadetblue" cdkDropList [cdkDropListData]="widgets"  
+  *ngFor="let widgets of widgetsList"  (cdkDropListDropped)="drop($event)"
+  [colspan]=1 [rowspan]=4>
+ <!--<div>"p;ace holder for {{widgets[0]}}"</div> -->
+  <div cdkDrag [cdkDragData]="widget" *ngFor="let widget of widgets"  style=" margin-left: 20px; min-width: 300px;min-height: 300px;width:100%;background-color:beige">
+    {{widget.name}}
+    <div #mywidg>    
+    </div>
+    
+</div>
+</mat-grid-tile >
+</div>
+</mat-grid-list>
+<router-outlet></router-outlet>
