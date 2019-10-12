@@ -1,6 +1,7 @@
 import { Component, ViewChildren, ElementRef } from '@angular/core';
-import {CdkDragDrop, moveItemInArray, transferArrayItem, CdkDrag} from '@angular/cdk/drag-drop';
-import { currentId } from 'async_hooks';
+import {CdkDragDrop, moveItemInArray, transferArrayItem, CdkDrag, CdkDragEnter,
+CdkDragExit} from '@angular/cdk/drag-drop';
+
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ export class AppComponent {
   [{name:'c', sortOrder:2}], 
   [{name:'d', sortOrder:3}]];
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -42,5 +43,57 @@ export class AppComponent {
         prevIndex);
       event.container.data[0].sortOrder = prevIndex;
     }
+  }
+  dropListEntered(event:CdkDragEnter){
+    setTimeout(() => {
+      let prev = Object.assign({}, event.item.data);
+    let cur = Object.assign({}, event.container.data);
+    let prevIndex = event.item.data.sortOrder;
+    let currIndex = event.container.data[0].sortOrder;
+    transferArrayItem(this.widgetsList,
+      this.widgetsList,
+      prevIndex,
+      currIndex);
+    event.item.data.sortOrder = currIndex;
+    event.container.data[0].sortOrder = prevIndex;
+    if(prevIndex>currIndex){
+      currIndex=currIndex+1;
+    }
+    else {
+      currIndex = currIndex-1;
+    }
+    transferArrayItem(
+      this.widgetsList,
+      this.widgetsList,        
+      currIndex,
+      prevIndex);
+ 
+    });
+  }
+  dropListExited(event:CdkDragExit){
+    setTimeout(() => {
+      let prev = Object.assign({}, event.item.data);
+    let cur = Object.assign({}, event.container.data);
+    let prevIndex = event.item.data.sortOrder;
+    let currIndex = event.container.data[0].sortOrder;
+    transferArrayItem(this.widgetsList,
+      this.widgetsList,
+      prevIndex,
+      currIndex);
+    event.item.data.sortOrder = currIndex;
+    event.container.data[0].sortOrder = prevIndex;
+    if(prevIndex>currIndex){
+      currIndex=currIndex+1;
+    }
+    else {
+      currIndex = currIndex-1;
+    }
+    transferArrayItem(
+      this.widgetsList,
+      this.widgetsList,        
+      currIndex,
+      prevIndex);
+ 
+    });
   }
 }
